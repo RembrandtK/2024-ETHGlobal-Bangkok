@@ -4,3 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+console = "0.15.8"
+idkit = "0.1.2"
+indicatif = "0.17.8"
+qrcode = { version = "0.14.1", default-features = false }
+tokio = { version = "1.39.3", features = ["macros", "rt", "rt-multi-thread"] }
