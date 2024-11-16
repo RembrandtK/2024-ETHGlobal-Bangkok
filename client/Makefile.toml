@@ -1,0 +1,11 @@
+env_files = [
+    "../.env",
+]
+
+[tasks.counter]
+command = "cargo"
+args = [
+    "run",
+    "--example",
+    "counter",
+]

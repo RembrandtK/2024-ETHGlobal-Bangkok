@@ -1,8 +1,6 @@
-[env]
-RPC_URL = "http://localhost:8547"
-CONTRACT_ADDRESS = "0x4af567288e68cad4aa93a272fe6139ca53859c70"
-PRIVATE_KEY = "0xb6b15c8cb491557369f3c7d2c287b053eb229daa9c22138887752191c9520659"
-PRIVATE_KEY_FILE = "/home/rem/.config/private_key.txt"
+env_files = [
+    "../.env",
+]
 
 [tasks.check]
 command = "cargo"
@@ -35,12 +33,4 @@ args = [
     "--private-key=${PRIVATE_KEY}",
     "${CONTRACT_ADDRESS}",
     "0",
-]
-
-[tasks.counter]
-command = "cargo"
-args = [
-    "run",
-    "--example",
-    "counter",
 ]
