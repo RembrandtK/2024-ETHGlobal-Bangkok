@@ -15,7 +15,7 @@ use ethers::{
 };
 use std::str::FromStr;
 use std::sync::Arc;
-use tracing::Level;
+use tracing::{debug, info, warn, Level};
 
 use clap::Parser;
 
@@ -62,15 +62,18 @@ async fn main() -> eyre::Result<()> {
 
     let counter = Contract::new(address, client);
     let num = counter.number().call().await;
-    println!("Counter number value = {:?}", num);
+    info!("Counter number value = {num:?}");
 
     let pending = counter.increment();
     if let Some(receipt) = pending.send().await?.await? {
-        println!("Receipt = {:#?}", receipt);
+        debug!("Receipt = {:#?}", receipt);
+    } else {
+        warn!("No receipt received");
     }
-    println!("Successfully incremented counter via a tx");
+    info!("Successfully incremented counter via a tx");
 
     let num = counter.number().call().await;
-    println!("New counter number value = {:?}", num);
+    info!("New counter number value = {:?}", num);
+    
     Ok(())
 }
