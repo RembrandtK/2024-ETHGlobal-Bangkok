@@ -4,8 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-contracts = { path = "../contract" }
-dotenv = "0.15.0"
-ethers = "2.0.14"
-eyre = "0.6.12"
-tokio = "1.41.1"
+contracts.workspace = true
+dotenv.workspace = true
+ethers.workspace = true
+eyre.workspace = true
+tokio.workspace = true
