@@ -1,3 +1,6 @@
+use ethers::types::H256;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, clap::ValueEnum, Default, strum_macros::Display)]
 pub enum Chain {
     /// Arbitrum mainnet chain.
     Arbitrum,
@@ -6,6 +9,7 @@ pub enum Chain {
     ArbitrumSepolia,
 
     /// Local testnet.
+    #[default]
     Local,
 }
 
@@ -20,7 +24,7 @@ impl Chain {
     }
 
     /// Explorer transaction URL.
-    pub fn tx_url(&self, hash: &str) -> String {
-        format!("{explorer}/tx/{hash}", explorer = self.explorer())
+    pub fn tx_url(&self, hash: &H256) -> String {
+        format!("{explorer}/tx/{hash:?}", explorer = self.explorer())
     }
 }

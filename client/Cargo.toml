@@ -16,3 +16,4 @@ qrcode.workspace = true
 tokio = { workspace = true, features = ["full"] }
 tracing.workspace = true
 tracing-subscriber.workspace = true
+strum_macros.workspace = true

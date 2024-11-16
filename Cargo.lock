@@ -764,6 +764,7 @@ dependencies = [
  "idkit",
  "indicatif",
  "qrcode",
+ "strum_macros",
  "tokio",
  "tracing",
  "tracing-subscriber",

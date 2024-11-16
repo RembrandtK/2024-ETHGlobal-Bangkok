@@ -31,7 +31,7 @@ pub async fn invoke_counter(args: Args) -> eyre::Result<()> {
 
         let transaction_hash = receipt.transaction_hash;
         info!("Transaction hash: {transaction_hash:?}");
-        
+        println!("Transaction: {url}", url = args.chain.tx_url(&transaction_hash));
     } else {
         warn!("No receipt received");
     }

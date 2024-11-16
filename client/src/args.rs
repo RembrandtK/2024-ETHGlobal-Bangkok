@@ -3,6 +3,8 @@ use dotenv::dotenv;
 
 use tracing::Level;
 
+use crate::Chain;
+
 #[derive(Debug, Parser)]
 pub struct Args {
     #[arg(short, long, env, default_value = "info")]
@@ -25,6 +27,10 @@ pub struct Args {
 
     #[arg(long, env)]
     pub candidate: String,
+
+    #[arg(long, env)]
+    #[clap(default_value_t = Chain::default(), ignore_case = true)]
+    pub chain: Chain,
 }
 
 pub fn get_args() -> Args {
