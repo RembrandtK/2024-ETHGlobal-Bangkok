@@ -28,10 +28,10 @@ pub async fn invoke_counter(args: Args) -> eyre::Result<()> {
     let pending = counter.increment();
     if let Some(receipt) = pending.send().await?.await? {
         debug!("Receipt = {:#?}", receipt);
+        info!("Transaction hash: {:?}", receipt.transaction_hash);
     } else {
         warn!("No receipt received");
     }
-    info!("Successfully incremented counter via a tx");
 
     let num = counter.number().call().await;
     info!("New counter number value = {:?}", num);

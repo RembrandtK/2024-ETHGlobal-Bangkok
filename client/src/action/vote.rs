@@ -5,9 +5,9 @@ use idkit::{
 };
 use indicatif::ProgressBar;
 use qrcode::{render::unicode, QrCode};
-use tracing::info;
 use std::{str::FromStr, time::Duration};
 use tokio::time::sleep;
+use tracing::info;
 
 use crate::args::Args;
 
@@ -26,7 +26,7 @@ pub async fn approve_vote(args: Args) -> eyre::Result<()> {
         VerificationLevel::Orb,
         BridgeUrl::default(),
         ACTION_SIGNAL,
-        None,
+        Some(&args.candidate),
     )
     .await?;
 
@@ -93,8 +93,7 @@ pub async fn approve_vote(args: Args) -> eyre::Result<()> {
         "{} {}",
         header_style.apply_to("Proof:"),
         proof.proof
-    ))
-    ?;
+    ))?;
 
     match verify_proof(proof, app_id, ACTION_SIGNAL, "").await {
         Ok(()) => {
@@ -102,8 +101,7 @@ pub async fn approve_vote(args: Args) -> eyre::Result<()> {
             term.write_line(&format!(
                 "{}",
                 Style::new().bold().green().apply_to("Proof verified!")
-            ))
-            ?;
+            ))?;
         }
         Err(error) => {
             term.write_line("\n")?;
@@ -113,8 +111,7 @@ pub async fn approve_vote(args: Args) -> eyre::Result<()> {
                     .bold()
                     .red()
                     .apply_to(format!("Proof verification failed: {error}")),
-            ))
-            ?;
+            ))?;
         }
     }
 
