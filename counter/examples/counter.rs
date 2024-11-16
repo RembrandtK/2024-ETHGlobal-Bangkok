@@ -18,19 +18,19 @@ use std::str::FromStr;
 use std::sync::Arc;
 
 /// Your private key file path.
-const PRIV_KEY_PATH: &str = "PRIV_KEY_PATH";
+const PRIVATE_KEY_FILE: &str = "PRIVATE_KEY_FILE";
 
 /// Stylus RPC endpoint url.
 const RPC_URL: &str = "RPC_URL";
 
 /// Deployed pragram address.
-const STYLUS_CONTRACT_ADDRESS: &str = "STYLUS_CONTRACT_ADDRESS";
+const STYLUS_CONTRACT_ADDRESS: &str = "CONTRACT_ADDRESS";
 
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
     dotenv().ok();
     let priv_key_path =
-        std::env::var(PRIV_KEY_PATH).map_err(|_| eyre!("No {} env var set", PRIV_KEY_PATH))?;
+        std::env::var(PRIVATE_KEY_FILE).map_err(|_| eyre!("No {} env var set", PRIVATE_KEY_FILE))?;
     let rpc_url = std::env::var(RPC_URL).map_err(|_| eyre!("No {} env var set", RPC_URL))?;
     let contract_address = std::env::var(STYLUS_CONTRACT_ADDRESS)
         .map_err(|_| eyre!("No {} env var set", STYLUS_CONTRACT_ADDRESS))?;
@@ -70,6 +70,7 @@ async fn main() -> eyre::Result<()> {
 }
 
 fn read_secret_from_file(fpath: &str) -> eyre::Result<String> {
+    println!("Reading secret from file: {}", fpath);
     let f = std::fs::File::open(fpath)?;
     let mut buf_reader = BufReader::new(f);
     let mut secret = String::new();

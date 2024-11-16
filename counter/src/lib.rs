@@ -70,3 +70,15 @@ impl Votes {
         self.set_number(number + U256::from(1));
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::{VoterId, Votes};
+
+    #[motsu::test]
+    fn test_something(contract: Votes) {
+        let voter = VoterId::from(0x1234);
+        let count = contract.get_count(voter);
+        assert_eq!(count, 0);
+    }
+}
