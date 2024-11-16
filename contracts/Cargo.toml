@@ -5,9 +5,9 @@ edition = "2021"
 default-run = "contracts"
 
 [dependencies]
-alloy-primitives = "=0.7.6"
-alloy-sol-types = "=0.7.6"
-mini-alloc = "0.4.2"
+alloy-primitives = "0.8.12"
+alloy-sol-types = "0.8.12"
+mini-alloc = "0.6.0"
 stylus-sdk = "0.6.0"
 hex = "0.4.3"
 dotenv = "0.15.0"
