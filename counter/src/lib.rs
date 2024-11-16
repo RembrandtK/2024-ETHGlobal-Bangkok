@@ -25,23 +25,27 @@
 #![cfg_attr(not(feature = "export-abi"), no_main)]
 extern crate alloc;
 
+use ethers::core::k256::sha2::digest::typenum::uint;
 /// Import items from the SDK. The prelude contains common traits and macros.
-use stylus_sdk::{alloy_primitives::U256, prelude::*};
+use stylus_sdk::{alloy_primitives::U256, prelude::*, storage::{StorageAddress, StorageMap, StorageU256, StorageVec}};
 
-// Define some persistent storage using the Solidity ABI.
-// `Counter` will be the entrypoint.
-sol_storage! {
-    #[entrypoint]
-    pub struct Counter {
-        uint256 number;
-    }
+#[storage]
+pub struct Votes {
+    owner: StorageAddress,
+    votes: StorageMap<U256, VoteRanking>,
 }
 
-/// Declare that `Counter` is a contract with the following external methods.
+#[storage]
+pub struct VoteRanking {
+    ranking: StorageVec<StorageU256>,
+}
+
+
+
 #[public]
-impl Counter {
+impl Votes {
     /// Gets the number from storage.
-    pub fn number(&self) -> U256 {
+    pub fn get_vote(&self) -> Vec<uint256> {
         self.number.get()
     }
 
