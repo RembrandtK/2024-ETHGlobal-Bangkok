@@ -17,7 +17,10 @@ pub struct Args {
     #[arg(short, long, env("CONTRACT_ADDRESS"))]
     pub contract: String,
 
-    #[arg(short, long, env)]
+    #[arg(long, env)]
+    pub app_id: String,
+
+    #[arg(long, env)]
     pub api_key: String,
 }
 

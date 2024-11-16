@@ -10,30 +10,30 @@ use tokio::time::sleep;
 
 use crate::args::Args;
 
+const CANDIDIATE_VOTE_ACTION: &str = "vote-for-candidate";
+
 pub async fn approve_vote(args: Args) -> eyre::Result<()> {
     let term = Term::stdout();
-    term.clear_screen().unwrap();
+    term.clear_screen()?;
 
-    let app_id = AppId::from_str(&args.api_key)?;
+    let app_id = AppId::from_str(&args.app_id)?;
 
     let session = idkit::Session::new(
         &app_id,
-        "test-action",
+        CANDIDIATE_VOTE_ACTION,
         VerificationLevel::Orb,
         BridgeUrl::default(),
         "",
         None,
     )
-    .await
-    .unwrap();
+    .await?;
 
     let qrcode = QrCode::new(session.connect_url().to_string()).unwrap();
 
     term.write_line(&format!(
         "To continue, please scan the following QR code with your World App: {}",
         qrcode.render::<unicode::Dense1x2>().build(),
-    ))
-    .unwrap();
+    ))?;
 
     let pb = ProgressBar::new_spinner().with_message("Waiting for connection...");
     pb.enable_steady_tick(Duration::from_millis(100));
@@ -70,22 +70,19 @@ pub async fn approve_vote(args: Args) -> eyre::Result<()> {
         "{} {:?}",
         header_style.apply_to("Verification Level:"),
         proof.verification_level,
-    ))
-    .unwrap();
+    ))?;
 
     term.write_line(&format!(
         "{} {}",
         header_style.apply_to("Nullifier Hash:"),
         proof.nullifier_hash
-    ))
-    .unwrap();
+    ))?;
 
     term.write_line(&format!(
         "{} {}",
         header_style.apply_to("Merkle Root:"),
         proof.merkle_root
-    ))
-    .unwrap();
+    ))?;
 
     term.write_line(&format!(
         "{} {}",
