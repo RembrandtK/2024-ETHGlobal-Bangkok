@@ -1,9 +1,8 @@
 //! WIP client for vote contract.
 
-use client::{args::get_args, trace::start_tracing};
+use client::{abi::Contract, args::get_args, trace::start_tracing};
 use ethers::{
     middleware::SignerMiddleware,
-    prelude::abigen,
     providers::{Http, Middleware, Provider},
     signers::{LocalWallet, Signer},
     types::Address,
@@ -18,14 +17,7 @@ async fn main() -> eyre::Result<()> {
 
     start_tracing(args.level)?;
 
-    abigen!(
-        Contract,
-        r#"[
-            function number() external view returns (uint256)
-            function setNumber(uint256 number) external
-            function increment() external
-        ]"#
-    );
+
 
     let provider = Provider::<Http>::try_from(args.rpc)?;
     let address: Address = args.contract.parse()?;
