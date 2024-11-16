@@ -1,0 +1,23 @@
+[workspace]
+members = [
+    "client",
+    "contract",
+    "wid",
+]
+resolver = "2"
+
+[profile.release]
+codegen-units = 1
+strip = true
+lto = true
+panic = "abort"
+opt-level = "s"
+
+[workspace.dependencies]
+client = { path = "client" }
+contracts = { path = "contract" }
+wid = { path = "wid" }
+dotenv = "0.15.0"
+ethers = "2.0.14"
+eyre = "0.6.12"
+tokio = "1.41.1"
