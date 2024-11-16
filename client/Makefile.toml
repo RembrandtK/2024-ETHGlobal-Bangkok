@@ -10,3 +10,10 @@ args = [
     "counter",
 ]
 
+[tasks.flow]
+command = "cargo"
+args = [
+    "run",
+    "--bin",
+    "flow",
+]

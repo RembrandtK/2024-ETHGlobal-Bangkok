@@ -6,9 +6,13 @@ edition = "2021"
 [dependencies]
 clap = { workspace = true, features = ["derive", "env"] }
 contracts.workspace = true
+console.workspace = true
 dotenv.workspace = true
 ethers.workspace = true
 eyre.workspace = true
+idkit.workspace = true
+indicatif.workspace = true
+qrcode.workspace = true
 tokio = { workspace = true, features = ["full"] }
 tracing.workspace = true
 tracing-subscriber.workspace = true
