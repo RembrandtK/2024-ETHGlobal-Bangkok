@@ -1,7 +1,7 @@
 [workspace]
 members = [
     "client",
-    "contract",
+    "contracts",
     "wid",
 ]
 resolver = "2"
@@ -15,7 +15,7 @@ opt-level = "s"
 
 [workspace.dependencies]
 client = { path = "client" }
-contracts = { path = "contract" }
+contracts = { path = "contracts" }
 wid = { path = "wid" }
 dotenv = "0.15.0"
 ethers = "2.0.14"

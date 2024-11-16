@@ -13,27 +13,26 @@ use ethers::{
     types::Address,
 };
 use eyre::eyre;
-use std::io::{BufRead, BufReader};
 use std::str::FromStr;
 use std::sync::Arc;
 
 /// Your private key file path.
-const PRIVATE_KEY_FILE: &str = "PRIVATE_KEY_FILE";
+const ENV_PRIVATE_KEY: &str = "PRIVATE_KEY";
 
 /// Stylus RPC endpoint url.
-const RPC_URL: &str = "RPC_URL";
+const ENV_RPC_URL: &str = "RPC_URL";
 
 /// Deployed pragram address.
-const STYLUS_CONTRACT_ADDRESS: &str = "CONTRACT_ADDRESS";
+const ENV_CONTRACT_ADDRESS: &str = "CONTRACT_ADDRESS";
 
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
     dotenv().ok();
-    let priv_key_path =
-        std::env::var(PRIVATE_KEY_FILE).map_err(|_| eyre!("No {} env var set", PRIVATE_KEY_FILE))?;
-    let rpc_url = std::env::var(RPC_URL).map_err(|_| eyre!("No {} env var set", RPC_URL))?;
-    let contract_address = std::env::var(STYLUS_CONTRACT_ADDRESS)
-        .map_err(|_| eyre!("No {} env var set", STYLUS_CONTRACT_ADDRESS))?;
+    let private_key =
+        std::env::var(ENV_PRIVATE_KEY).map_err(|_| eyre!("No {} env var set", ENV_PRIVATE_KEY))?;
+    let rpc_url = std::env::var(ENV_RPC_URL).map_err(|_| eyre!("No {} env var set", ENV_RPC_URL))?;
+    let contract_address = std::env::var(ENV_CONTRACT_ADDRESS)
+        .map_err(|_| eyre!("No {} env var set", ENV_CONTRACT_ADDRESS))?;
     abigen!(
         Counter,
         r#"[
@@ -46,8 +45,7 @@ async fn main() -> eyre::Result<()> {
     let provider = Provider::<Http>::try_from(rpc_url)?;
     let address: Address = contract_address.parse()?;
 
-    let privkey = read_secret_from_file(&priv_key_path)?;
-    let wallet = LocalWallet::from_str(&privkey)?;
+    let wallet = LocalWallet::from_str(&private_key)?;
     let chain_id = provider.get_chainid().await?.as_u64();
     let client = Arc::new(SignerMiddleware::new(
         provider,
@@ -67,13 +65,4 @@ async fn main() -> eyre::Result<()> {
     let num = counter.number().call().await;
     println!("New counter number value = {:?}", num);
     Ok(())
-}
-
-fn read_secret_from_file(fpath: &str) -> eyre::Result<String> {
-    println!("Reading secret from file: {}", fpath);
-    let f = std::fs::File::open(fpath)?;
-    let mut buf_reader = BufReader::new(f);
-    let mut secret = String::new();
-    buf_reader.read_line(&mut secret)?;
-    Ok(secret.trim().to_string())
 }
