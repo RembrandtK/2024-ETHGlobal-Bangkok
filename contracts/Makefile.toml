@@ -34,3 +34,10 @@ args = [
     "${CONTRACT_ADDRESS}",
     "0",
 ]
+
+[tasks.abi]
+command = "cargo"
+args = [
+    "stylus",
+    "export-abi",
+]

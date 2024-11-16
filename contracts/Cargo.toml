@@ -2,6 +2,7 @@
 name = "contracts"
 version = "0.1.1"
 edition = "2021"
+default-run = "contracts"
 
 [dependencies]
 alloy-primitives = "=0.7.6"
@@ -24,6 +25,11 @@ debug = ["stylus-sdk/debug"]
 [[bin]]
 name = "contracts"
 path = "src/main.rs"
+
+[[bin]]
+name = "abi"
+path = "src/bin/abi.rs"
+required-features = ["export-abi"]
 
 [lib]
 crate-type = ["lib", "cdylib"]
