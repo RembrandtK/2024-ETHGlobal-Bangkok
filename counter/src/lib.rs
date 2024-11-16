@@ -4,6 +4,8 @@
 #![cfg_attr(not(feature = "export-abi"), no_main)]
 extern crate alloc;
 
+use std::{borrow::Borrow, ops::Deref};
+
 use stylus_sdk::{alloy_primitives::*, prelude::*, storage::*};
 
 // sol_storage! {
@@ -20,15 +22,23 @@ pub struct Votes {
     votes: StorageMap<U256, StorageVec<StorageU256>>,
 }
 
+pub type RankIndex = u32;
+pub type CandidateId = U256;
+pub type VoterId = U256;
+
 #[public]
 impl Votes {
     pub fn dummy(&self) -> U256 {
         U256::from(0)
     }
 
-    // pub fn rank_len(&self) -> U256 {
-    //     self.votes.load().len()
-    // }
+    pub fn rank_len(&self, voter: U256) -> RankIndex {
+        self.votes.get(voter).len() as u32
+    }
+
+    pub fn rank_item(&self, voter: U256, rank: RankIndex) {
+
+    }
 
     /// Gets the number from storage.
     pub fn number(&self) -> U256 {
