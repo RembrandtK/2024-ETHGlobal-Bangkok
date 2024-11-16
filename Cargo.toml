@@ -2,7 +2,6 @@
 members = [
     "client",
     "contracts",
-    "wid",
 ]
 resolver = "2"
 
