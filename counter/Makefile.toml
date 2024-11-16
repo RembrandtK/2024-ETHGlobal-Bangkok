@@ -1,7 +1,7 @@
 [env]
 RPC_URL = "http://localhost:8547"
-CONTRACT_ADDRESS = ""
-PRIV_KEY = "0xb6b15c8cb491557369f3c7d2c287b053eb229daa9c22138887752191c9520659"
+CONTRACT_ADDRESS = "0x4af567288e68cad4aa93a272fe6139ca53859c70"
+PRIVATE_KEY = "0xb6b15c8cb491557369f3c7d2c287b053eb229daa9c22138887752191c9520659"
 
 [tasks.check]
 command = "cargo"
@@ -9,3 +9,30 @@ args = [
     "stylus",
     "check",
 ]
+
+# See: https://docs.arbitrum.io/stylus/stylus-quickstart
+# cargo stylus deploy \
+#   --endpoint='http://localhost:8547' \
+#   --private-key="0xb6b15c8cb491557369f3c7d2c287b053eb229daa9c22138887752191c9520659"
+[tasks.deploy]
+command = "cargo"
+args = [
+    "stylus",
+    "deploy",
+    "--endpoint=${RPC_URL}",
+    "--private-key=${PRIVATE_KEY}",
+]
+
+# Run after deploy with updated contract address...
+[tasks.cache]
+command = "cargo"
+args = [
+    "stylus",
+    "cache",
+    "bid",
+    "--endpoint=${RPC_URL}",
+    "--private-key=${PRIVATE_KEY}",
+    "${CONTRACT_ADDRESS}",
+    "0",
+]
+
