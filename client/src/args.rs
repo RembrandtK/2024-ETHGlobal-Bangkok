@@ -16,6 +16,9 @@ pub struct Args {
 
     #[arg(short, long, env("CONTRACT_ADDRESS"))]
     pub contract: String,
+
+    #[arg(short, long, env)]
+    pub api_key: String,
 }
 
 pub fn get_args() -> Args {
