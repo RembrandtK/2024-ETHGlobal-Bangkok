@@ -1,2 +1,2 @@
-mod counter;
-pub use counter::invoke_counter;
+mod contract;
+pub use contract::invoke_counter;
