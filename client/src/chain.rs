@@ -14,6 +14,22 @@ pub enum Chain {
 }
 
 impl Chain {
+    pub fn chain_id(&self) -> u64 {
+        match self {
+            Self::Arbitrum => 42161,
+            Self::ArbitrumSepolia => 421614,
+            Self::Local => 412346,
+        }
+    }
+
+    pub fn rpc(&self) -> &str {
+        match self {
+            Self::Arbitrum => "https://arb1.arbitrum.io/rpc",
+            Self::ArbitrumSepolia => "https://sepolia-rpc.arbitrum.io",
+            Self::Local => "http://localhost:8545",
+        }
+    }
+
     /// Chain explorer base URL.
     pub fn explorer(&self) -> &str {
         match self {
