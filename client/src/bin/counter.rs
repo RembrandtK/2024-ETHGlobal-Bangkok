@@ -13,45 +13,34 @@ use ethers::{
     signers::{LocalWallet, Signer},
     types::Address,
 };
-use eyre::eyre;
 use std::str::FromStr;
 use std::sync::Arc;
-
-/// Your private key file path.
-const ENV_PRIVATE_KEY: &str = "PRIVATE_KEY";
-
-/// Stylus RPC endpoint url.
-const ENV_RPC_URL: &str = "RPC_URL";
-
-/// Deployed pragram address.
-const ENV_CONTRACT_ADDRESS: &str = "CONTRACT_ADDRESS";
-
+use tracing::Level;
 
 use clap::Parser;
 
-
 #[derive(Parser)]
-#[command(name = "Protocol View Export")]
-#[command(about = "Protocol views for GIPs", long_about = None)]
 struct Args {
-    #[arg(short, long)]
-    path: PathBuf,
+    #[arg(short, long, env, default_value = "info")]
+    level: Level,
 
-    #[arg(short, long)]
-    view: Vec<PView>,
+    #[arg(short, long, env("PRIVATE_KEY"))]
+    key: String,
+
+    #[arg(short, long, env("RPC_URL"))]
+    rpc: String,
+
+    #[arg(short, long, env("CONTRACT_ADDRESS"))]
+    contract: String,
 }
 
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
-    start_tracing(filter_level)?;
-
     dotenv().ok();
-    let private_key =
-        std::env::var(ENV_PRIVATE_KEY).map_err(|_| eyre!("No {} env var set", ENV_PRIVATE_KEY))?;
-    let rpc_url =
-        std::env::var(ENV_RPC_URL).map_err(|_| eyre!("No {} env var set", ENV_RPC_URL))?;
-    let contract_address = std::env::var(ENV_CONTRACT_ADDRESS)
-        .map_err(|_| eyre!("No {} env var set", ENV_CONTRACT_ADDRESS))?;
+    let args = Args::parse();
+
+    start_tracing(args.level)?;
+
     abigen!(
         Contract,
         r#"[
@@ -61,10 +50,10 @@ async fn main() -> eyre::Result<()> {
         ]"#
     );
 
-    let provider = Provider::<Http>::try_from(rpc_url)?;
-    let address: Address = contract_address.parse()?;
+    let provider = Provider::<Http>::try_from(args.rpc)?;
+    let address: Address = args.contract.parse()?;
 
-    let wallet = LocalWallet::from_str(&private_key)?;
+    let wallet = LocalWallet::from_str(&args.key)?;
     let chain_id = provider.get_chainid().await?.as_u64();
     let client = Arc::new(SignerMiddleware::new(
         provider,
