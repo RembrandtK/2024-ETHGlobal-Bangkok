@@ -1,11 +1,6 @@
-//! Example on how to interact with a deployed `stylus-hello-world` contract using defaults.
-//! This example uses ethers-rs to instantiate the contract using a Solidity ABI.
-//! Then, it attempts to check the current counter value, increment it via a tx,
-//! and check the value again. The deployed contract is fully written in Rust and compiled to WASM
-//! but with Stylus, it is accessible just as a normal Solidity smart contract is via an ABI.
+//! WIP client for vote contract.
 
-use client::trace::start_tracing;
-use dotenv::dotenv;
+use client::{args::get_args, trace::start_tracing};
 use ethers::{
     middleware::SignerMiddleware,
     prelude::abigen,
@@ -15,29 +10,11 @@ use ethers::{
 };
 use std::str::FromStr;
 use std::sync::Arc;
-use tracing::{debug, info, warn, Level};
-
-use clap::Parser;
-
-#[derive(Parser)]
-struct Args {
-    #[arg(short, long, env, default_value = "info")]
-    level: Level,
-
-    #[arg(short, long, env("PRIVATE_KEY"))]
-    key: String,
-
-    #[arg(short, long, env("RPC_URL"))]
-    rpc: String,
-
-    #[arg(short, long, env("CONTRACT_ADDRESS"))]
-    contract: String,
-}
+use tracing::{debug, info, warn};
 
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
-    dotenv().ok();
-    let args = Args::parse();
+    let args = get_args();
 
     start_tracing(args.level)?;
 
@@ -74,6 +51,6 @@ async fn main() -> eyre::Result<()> {
 
     let num = counter.number().call().await;
     info!("New counter number value = {:?}", num);
-    
+
     Ok(())
 }
