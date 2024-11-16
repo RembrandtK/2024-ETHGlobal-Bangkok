@@ -4,21 +4,23 @@
 #![cfg_attr(not(feature = "export-abi"), no_main)]
 extern crate alloc;
 
-use stylus_sdk::{alloy_primitives::*, prelude::*, storage::*};
+use stylus_sdk::{alloy_primitives::*, prelude::*};
 
-// sol_storage! {
-//     #[entrypoint]
-//     pub struct Votes {
-//         uint256 number;
-//     }
-// }
-
-#[storage]
-pub struct Votes {
-    number: StorageU256,
-    // owner: StorageAddress,
-    votes: StorageMap<VoterId, StorageVec<StorageU256>>,
+sol_storage! {
+    #[entrypoint]
+    pub struct Votes {
+        uint256 number;
+        mapping(uint256 => uint256[]) votes;
+    }
 }
+
+// #[storage]
+// #[entrypoint]
+// pub struct Votes {
+//     number: StorageU256,
+//     // owner: StorageAddress,
+//     votes: StorageMap<VoterId, StorageVec<StorageU256>>,
+// }
 
 pub type RankIndex = u32;
 pub type CandidateId = U256;
