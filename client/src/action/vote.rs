@@ -5,6 +5,7 @@ use idkit::{
 };
 use indicatif::ProgressBar;
 use qrcode::{render::unicode, QrCode};
+use tracing::info;
 use std::{str::FromStr, time::Duration};
 use tokio::time::sleep;
 
@@ -28,7 +29,10 @@ pub async fn approve_vote(args: Args) -> eyre::Result<()> {
     )
     .await?;
 
-    let qrcode = QrCode::new(session.connect_url().to_string()).unwrap();
+    let connect_url = session.connect_url().to_string();
+    info!("Connect URL: {connect_url}");
+
+    let qrcode = QrCode::new(connect_url)?;
 
     term.write_line(&format!(
         "To continue, please scan the following QR code with your World App: {}",
