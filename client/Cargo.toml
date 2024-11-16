@@ -8,4 +8,4 @@ contracts.workspace = true
 dotenv.workspace = true
 ethers.workspace = true
 eyre.workspace = true
-tokio.workspace = true
+tokio = { workspace = true, features = ["full"] }

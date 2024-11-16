@@ -34,7 +34,7 @@ async fn main() -> eyre::Result<()> {
     let contract_address = std::env::var(ENV_CONTRACT_ADDRESS)
         .map_err(|_| eyre!("No {} env var set", ENV_CONTRACT_ADDRESS))?;
     abigen!(
-        Counter,
+        Contract,
         r#"[
             function number() external view returns (uint256)
             function setNumber(uint256 number) external
@@ -52,13 +52,13 @@ async fn main() -> eyre::Result<()> {
         wallet.clone().with_chain_id(chain_id),
     ));
 
-    let counter = Counter::new(address, client);
+    let counter = Contract::new(address, client);
     let num = counter.number().call().await;
     println!("Counter number value = {:?}", num);
 
     let pending = counter.increment();
     if let Some(receipt) = pending.send().await?.await? {
-        println!("Receipt = {:?}", receipt);
+        println!("Receipt = {:#?}", receipt);
     }
     println!("Successfully incremented counter via a tx");
 
