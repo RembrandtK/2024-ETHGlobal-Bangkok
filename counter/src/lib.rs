@@ -4,20 +4,21 @@
 #![cfg_attr(not(feature = "export-abi"), no_main)]
 extern crate alloc;
 
-use stylus_sdk::{alloy_primitives::*, prelude::*};
+use stylus_sdk::{alloy_primitives::*, prelude::*, storage::*};
 
-sol_storage! {
-    #[entrypoint]
-    pub struct Votes {
-        uint256 number;
-    }
-}
-
-// #[storage]
-// pub struct Votes {
-//     // owner: StorageAddress,
-//     // votes: StorageMap<U256, StorageVec<StorageU256>>,
+// sol_storage! {
+//     #[entrypoint]
+//     pub struct Votes {
+//         uint256 number;
+//     }
 // }
+
+#[storage]
+pub struct Votes {
+    number: StorageU256,
+    // owner: StorageAddress,
+    votes: StorageMap<U256, StorageVec<StorageU256>>,
+}
 
 #[public]
 impl Votes {
@@ -25,8 +26,12 @@ impl Votes {
         U256::from(0)
     }
 
-       /// Gets the number from storage.
-       pub fn number(&self) -> U256 {
+    // pub fn rank_len(&self) -> U256 {
+    //     self.votes.load().len()
+    // }
+
+    /// Gets the number from storage.
+    pub fn number(&self) -> U256 {
         self.number.get()
     }
 
