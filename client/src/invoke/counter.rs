@@ -28,7 +28,10 @@ pub async fn invoke_counter(args: Args) -> eyre::Result<()> {
     let pending = counter.increment();
     if let Some(receipt) = pending.send().await?.await? {
         debug!("Receipt = {:#?}", receipt);
-        info!("Transaction hash: {:?}", receipt.transaction_hash);
+
+        let transaction_hash = receipt.transaction_hash;
+        info!("Transaction hash: {transaction_hash:?}");
+        
     } else {
         warn!("No receipt received");
     }
