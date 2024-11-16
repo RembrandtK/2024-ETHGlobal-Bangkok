@@ -11,6 +11,15 @@ args = [
     "call",
 ]
 
+[tasks.vote]
+command = "cargo"
+args = [
+    "run",
+    "-q",
+    "--bin",
+    "vote",
+]
+
 [tasks.verify]
 command = "cargo"
 args = [
