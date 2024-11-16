@@ -3,7 +3,7 @@ use dotenv::dotenv;
 
 use tracing::Level;
 
-#[derive(Parser)]
+#[derive(Debug, Parser)]
 pub struct Args {
     #[arg(short, long, env, default_value = "info")]
     pub level: Level,
