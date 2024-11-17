@@ -2,7 +2,7 @@ use idkit::session::AppId;
 
 use std::str::FromStr;
 
-use crate::{action::verify::verify_user_action, args::Args};
+use crate::{action::core::verify_user_action, args::Args};
 
 const CANDIDIATE_VOTE_ACTION: &str = "vote-for-candidate";
 const ACTION_SIGNAL: &str = "";
