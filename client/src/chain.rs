@@ -34,8 +34,8 @@ impl Chain {
     pub fn explorer(&self) -> &str {
         match self {
             Self::Arbitrum => "https://arbitrum.blockscout.com",
-            Self::ArbitrumSepolia => "https://sepolia-explorer.arbitrum.io",
-            Self::Local => "https://sepolia-explorer.arbitrum.io",
+            Self::ArbitrumSepolia => "https://arbitrum-sepolia.blockscout.com",
+            Self::Local => "https://arbitrum-sepolia.blockscout.com",
         }
     }
 
